@@ -20,7 +20,9 @@ export default function Navbar() {
             </h2>
           </div>
           <div className="text-blue-700">
-            <a className="underline">Login</a>
+            <Link  to={"/sign-in"}>
+              Login
+            </Link>
           </div>
         </div>
       </div>
