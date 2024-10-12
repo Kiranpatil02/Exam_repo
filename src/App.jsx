@@ -1,12 +1,21 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from "react";
+import Navbar from "./Components/Navbar/Navbar";
+import Home from "./Components/Home/Home";
+import Card from "./Components/Home/Card";
+import Content from "./Components/Content/Content";
+import { Outlet } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [count, setCount] = useState(0);
 
   return (
-   <h2 className='bg-red-500'>Hey there</h2>
-  )
+    <>
+      <div>
+        <Navbar/>
+          <Outlet/>
+      </div>
+    </>
+  );
 }
 
-export default App
+
