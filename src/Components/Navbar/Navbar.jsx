@@ -5,7 +5,7 @@ export default function Navbar() {
   return (
     <>
       <div className="bg-gray-200 h-16 ">
-        <div className="flex items-center border-2  justify-between h-full ">
+        <div className="flex items-center border-2  justify-between h-full px-6 ">
           <div>
             <a
               className="text-blue-500 text-xl underline"
@@ -20,7 +20,7 @@ export default function Navbar() {
             </h2>
           </div>
           <div className="text-blue-700">
-            <a href="">Login</a>
+            <a className="underline">Login</a>
           </div>
         </div>
       </div>
