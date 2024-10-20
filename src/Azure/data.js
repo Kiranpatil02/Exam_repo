@@ -1,18 +1,24 @@
 import { CosmosClient } from "@azure/cosmos";
-import dotenv from 'dotenv';
-dotenv.config();
-const client=new CosmosClient(process.env.AZURE_COSMOS_CONNECTIONSTRING)
 
-const database=client.database("container2");
-const container=database.container("semester");
+ export class docs{
+    client=new CosmosClient(import.meta.env.VITE_AZURE_COSMOS_CONNECTIONSTRING);
 
-async function fetchDocuments() {
-    try {
-        const {resource:document } = await container.item("Semester-1").read();
-        console.log(document.coursename[0]);
-    } catch (error) {
-        console.error("Error retrieving documents:", error);
+    constructor(){
+        this.database=this.client.database("container2");
+        this.container=this.database.container("semester");
     }
-}
 
-fetchDocuments();
+    
+    async  fetchDocuments(id) {
+        try {
+            const {resource:document } = await this.container.item(`Semester-${id}`).read();
+            console.log(document.coursename);
+            return document.coursename;
+        } catch (error) {
+            console.error("Error retrieving documents:", error);
+        }
+    }
+    
+}
+const db=new docs();
+export default db;
