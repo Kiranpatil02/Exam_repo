@@ -26,5 +26,18 @@ async function download(){
     console.log(`${blobName} downloaded`);
 }
 
-download()
-  .then(() => console.log(`done`))
+// download()
+//   .then(() => console.log(`done`))
+
+async function listBlobs() {
+  let containerName="files"
+  const containerClient = blobServiceClient.getContainerClient(containerName);
+  console.log(`Listing blobs in container: ${containerName}`);
+
+  // Iterate through blobs in the container
+  for await (const blob of containerClient.listBlobsFlat()) {
+      console.log(`- ${blob.name}`);
+  }
+}
+
+listBlobs().then(()=>console.log("ALl the files ->"))
