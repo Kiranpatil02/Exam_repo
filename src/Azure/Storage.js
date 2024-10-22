@@ -17,7 +17,7 @@ const blobServiceClient = new BlobServiceClient(
 
 async function download(){
     const containerName = 'files';
-    const blobName = 'Quiz_1.pdf';
+    const blobName = 'Probability';
     const containerClient = await blobServiceClient.getContainerClient(containerName);
     const blobClient = await containerClient.getBlockBlobClient(blobName);
     console.log("Inside here")
