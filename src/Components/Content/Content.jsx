@@ -6,22 +6,25 @@ import { BsFilePdf } from "react-icons/bs";
 
 export default function Content() {
   const [courses, setcourses] = useState([]);
+  const [year, setyear] = useState();
 
-  const handleclick=()=>{
-    serv.downloadfile();
-  }
+  const handleyear = (e) => {
+    setyear(e.target.value);
+  };
+
+  // const handleclick = async (coursename,year) => {
+  //   await serv.getfile(coursename, year);
+  // };
 
   const { id } = useParams();
   console.log(id);
 
   useEffect(() => {
-    console.log(serv.listfiles())
+    console.log(serv.listfiles());
     db.fetchDocuments(id).then((e) => {
       setcourses(e);
     });
   }, []);
-
-
 
   return (
     <>
@@ -54,18 +57,11 @@ export default function Content() {
             </label>
             <select
               className="ml-2 w-32 rounded-md border h-12 rounded-md w-40 hover:outline-none"
-              name=""
-              id=""
+              onChange={handleyear}
             >
-              <option value="US" className="f">
-                2024
-              </option>
-              <option value="US" className="f">
-                2023
-              </option>
-              <option value="US" className="f">
-                2022
-              </option>
+              <option>2024</option>
+              <option>2023</option>
+              <option>2022</option>
             </select>
           </div>
         </div>
@@ -81,19 +77,18 @@ export default function Content() {
             </tr>
           </thead>
           <tbody>
-            {courses.map((name,index) => (
-              <tr key={index} className="border border-black hover:cursor-pointer">
-                {name}
-                <td onClick={handleclick} className="border border-black p-2 text-center">
-                  <BsFilePdf />
+            {courses.map((name, index) => (
+              <tr key={index} className="border border-black ">
+                <td className="border border-black p-2 text-center">{name}</td>
+                {/* <td className="border border-black p-2 text-center hover:cursor-pointer">
+                  {handleclick(name,year) ? <BsFilePdf /> : <i>NA</i>}
                 </td>
-                <td className="border border-black p-2 text-center">
-                  <i className="fas fa-file"></i>
-                  
+                <td className="border border-black p-2 text-center hover:cursor-pointer">
+                  {handleclick(name,year)? <BsFilePdf /> : <i>NA</i>}
                 </td>
-                <td className="border border-black p-2 text-center">
-                  <i className="fas fa-file"></i>
-                </td>
+                <td className="border border-black p-2 text-center hover:cursor-pointer">
+                  {handleclick(name,year) ? <BsFilePdf /> : <i>NA</i>}
+                </td> */}
               </tr>
             ))}
           </tbody>

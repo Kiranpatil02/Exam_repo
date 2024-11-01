@@ -13,17 +13,34 @@ class Service{
 
   async listfiles(){
     try{
-      for await (const blob of this.containerClient.listBlobsFlat()) {
-        console.log(`Blob: ${blob.name}`);
+      let i = 1;
+      for await (const blob of this.blobServiceClient.findBlobsByTags("probability='2023'")) {
+        console.log(`Blob ${i++}: ${blob.name}`);
       }
+
+      // for await (const blob of this.containerClient.listBlobsFlat()) {
+      //   console.log(`Blob: ${blob.name}`);
+      // }
     } catch (error) {
       console.error("Error listing files:", error);
     }
   }
 
-  async downloadfile(){
+  async getfile(tag,value){
     try{
-      const blobClient=this.containerClient.getBlobClient("Probability/Quiz_1.pdf");
+      const filename=this.blobServiceClient.findBlobsByTags(`${tag}='${value}'`);
+      for await(const i of filename){
+        this.downloadfile(i.name)
+      }
+
+    }catch(e){
+      console.log("Failed logging file")
+    }
+  }
+
+  async downloadfile(filename){
+    try{
+      const blobClient=this.containerClient.getBlobClient(`${filename}`);
       const downloadblobresponse=await blobClient.download();
       const downloaded=await  downloadblobresponse.blobBody
       // console.log("Downloaded blob content", downloaded);
