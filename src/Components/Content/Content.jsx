@@ -1,18 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import db from "C:/Users/Kiran Patil/Desktop/Cloud computing/End-sem/Exam_repo/src/Azure/data.js";
+import serv from "../../Azure/storage";
+import { BsFilePdf } from "react-icons/bs";
 
 export default function Content() {
   const [courses, setcourses] = useState([]);
 
+  const handleclick=()=>{
+    serv.downloadfile();
+  }
+
   const { id } = useParams();
   console.log(id);
 
-  useEffect(()=>{
-    db.fetchDocuments(id).then((e)=>{
+  useEffect(() => {
+    console.log(serv.listfiles())
+    db.fetchDocuments(id).then((e) => {
       setcourses(e);
-    })
-  },[])
+    });
+  }, []);
+
+
 
   return (
     <>
@@ -32,15 +41,11 @@ export default function Content() {
             </label>
 
             <select className=" ml-2 w-32 rounded-md border h-12 rounded-md w-40 hover:outline-none">
-              {
-                courses.map((coursename)=>(
-                  <>
-                  <option>
-                    {coursename}
-                  </option>
-                  </>
-                ))
-              }
+              {courses.map((coursename) => (
+                <>
+                  <option>{coursename}</option>
+                </>
+              ))}
             </select>
           </div>
           <div>
@@ -65,33 +70,32 @@ export default function Content() {
           </div>
         </div>
       </div>
-      <div className="mx-auto w-full max-w-lg mt-40 p-4">
+      <div className="mx-auto max-w-lg mt-40 p-1">
         <table className="w-full border-collapse">
           <thead>
             <tr>
               <th className="border border-black p-2">Course Code</th>
-              <th className="border border-black p-2">Quiz 1</th>
-              <th className="border border-black p-2">Quiz 2</th>
-              <th className="border border-black p-2">Midterm</th>
-              <th className="border border-black p-2">Final Exam</th>
+              <th className="border border-black w-24 ">Quiz 1</th>
+              <th className="border border-black w-24">Quiz 2</th>
+              <th className="border border-black w-24">Midterm</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="border border-black p-2">22AIEDL110201</td>
-              <td className="border border-black p-2 text-center">
-                <i className="fas fa-file"></i>
-              </td>
-              <td className="border border-black p-2 text-center">
-                <i className="fas fa-file"></i>
-              </td>
-              <td className="border border-black p-2 text-center">
-                <i className="fas fa-file"></i>
-              </td>
-              <td className="border border-black p-2 text-center">
-                <i className="fas fa-file"></i>
-              </td>
-            </tr>
+            {courses.map((name,index) => (
+              <tr key={index} className="border border-black hover:cursor-pointer">
+                {name}
+                <td onClick={handleclick} className="border border-black p-2 text-center">
+                  <BsFilePdf />
+                </td>
+                <td className="border border-black p-2 text-center">
+                  <i className="fas fa-file"></i>
+                  
+                </td>
+                <td className="border border-black p-2 text-center">
+                  <i className="fas fa-file"></i>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

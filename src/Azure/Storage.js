@@ -1,43 +1,57 @@
-import { BlobServiceClient,StorageSharedKeyCredential } from "@azure/storage-blob";
-const dotenv = await import('dotenv');
-dotenv.config()
+import { BlobServiceClient } from "@azure/storage-blob";
 
-const accountname=process.env.AZURE_STORAGE_ACCOUNT_NAME;
-const accountkey=process.env.AZURE_STORAGE_ACCOUNT_KEY;
-if (!accountname) throw Error('Azure Storage accountName not found');
-if (!accountkey) throw Error('Azure Storage accountKey not found');
 
-const sharedKeyCredential = new StorageSharedKeyCredential(accountname, accountkey);
+class Service{
 
-const blobServiceUri = `https://examfiles.blob.core.windows.net/`
-
-const blobServiceClient = new BlobServiceClient(
-    blobServiceUri,sharedKeyCredential
-  );
-
-async function download(){
-    const containerName = 'files';
-    const blobName = 'Probability';
-    const containerClient = await blobServiceClient.getContainerClient(containerName);
-    const blobClient = await containerClient.getBlockBlobClient(blobName);
-    console.log("Inside here")
-    await blobClient.downloadToFile(blobName);
-
-    console.log(`${blobName} downloaded`);
-}
-
-// download()
-//   .then(() => console.log(`done`))
-
-async function listBlobs() {
-  let containerName="files"
-  const containerClient = blobServiceClient.getContainerClient(containerName);
-  console.log(`Listing blobs in container: ${containerName}`);
-
-  // Iterate through blobs in the container
-  for await (const blob of containerClient.listBlobsFlat()) {
-      console.log(`- ${blob.name}`);
+  constructor(){
+    this.accountName="examfiles";
+    this.sas="?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-11-01T19:19:00Z&st=2024-11-01T11:19:00Z&spr=https&sig=su8ZYSQw7yrI8UVGHV9N0aGpmYBztsgoW1K5hlthCqY%3D"
+    this.blobServiceClient=new BlobServiceClient(`https://${this.accountName}.blob.core.windows.net${this.sas}`);
+    this.containerClient = this.blobServiceClient.getContainerClient("semester-5");
+    
   }
+
+  async listfiles(){
+    try{
+      for await (const blob of this.containerClient.listBlobsFlat()) {
+        console.log(`Blob: ${blob.name}`);
+      }
+    } catch (error) {
+      console.error("Error listing files:", error);
+    }
+  }
+
+  async downloadfile(){
+    try{
+      const blobClient=this.containerClient.getBlobClient("Probability/Quiz_1.pdf");
+      const downloadblobresponse=await blobClient.download();
+      const downloaded=await  downloadblobresponse.blobBody
+      // console.log("Downloaded blob content", downloaded);
+
+      const url=URL.createObjectURL(await downloaded);
+
+      const a=document.createElement("a");
+      a.style.display="none";
+      a.href=url;
+      a.download="Quiz_1.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      URL.revokeObjectURL(url);
+
+
+
+    }
+    catch(e){
+      console.log("Failed downloading")
+    }
+  }
+
 }
 
-listBlobs().then(()=>console.log("ALl the files ->"))
+const serv=new Service()
+export default serv
+
+
+
