@@ -12,11 +12,11 @@ export default function Home() {
     }
   return (
     <>
-      <div>
+      <div className="max-w-screen-2xl mx-auto">
         <h2 className="text-3xl font-serif underline ml-4 mt-10 ">Semester Wise Papers</h2>
       </div>
-      <div className="mt-20 h-96 ">
-        <div className="flex flex-wrap gap-20 gap-y-10  px-32 w-full items-center ">
+      <div className="mt-20 max-w-screen-2xl mx-auto">
+        <div className="flex flex-wrap gap-20 gap-y-10  justify-center w-full items-center ">
           {renderCards(9)}
         </div>
       </div>
