@@ -1,6 +1,7 @@
 import React from "react";
 import { SignIn } from "@clerk/clerk-react";
 import { IoMdArrowBack } from "react-icons/io";
+import { dark } from '@clerk/themes'
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -16,6 +17,7 @@ export default function Login() {
       <div className="w-fit mx-auto mt-10 ">
         <SignIn
           appearance={{
+            baseTheme:dark,
             elements: {
               footerActionLink: "hidden",
             },
