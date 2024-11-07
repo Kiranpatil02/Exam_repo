@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowOutward } from "react-icons/md";
+import { useUser } from "@clerk/clerk-react";
+import Profile from "./profile";
 
 export default function Navbar() {
+  const {isSignedIn}=useUser();
   return (
     <>
       <div className="bg-gray-200 h-16 max-w-screen-2xl mx-auto ">
@@ -24,9 +27,15 @@ export default function Navbar() {
             </h2>
           </div>
           <div className="text-blue-700 hover:text-blue-800 hover:underline">
-            <Link  to={"/sign-in"}>
+            {
+              (isSignedIn)?(
+                <Profile/>
+              )
+             :(<Link  to={"/sign-in"}>
               Login
-            </Link>
+            </Link>)
+            }
+            
           </div>
         </div>
       </div>
