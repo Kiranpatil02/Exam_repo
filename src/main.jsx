@@ -8,6 +8,7 @@ import Content from "./Components/Content/Content.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import config from "./config/config.js";
 import Login from "./Components/Login/Login.jsx";
+import Dashboard from "./Components/Content/Dashboard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
         element: <Content />,
       },
       {
-        path:"/sign-in",
+        path:"/sign-in/*",
         element:<Login/>
+      },
+      {
+        path:"/Dashboard",
+        element:<Dashboard/>
       }
       
     ],
