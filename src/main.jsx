@@ -9,6 +9,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import config from "./config/config.js";
 import Login from "./Components/Login/Login.jsx";
 import Dashboard from "./Components/Content/Dashboard.jsx";
+import UploadFile from "./Components/User/Upload.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,14 +25,17 @@ const router = createBrowserRouter([
         element: <Content />,
       },
       {
-        path:"/sign-in/*",
-        element:<Login/>
+        path: "/sign-in/*",
+        element: <Login />,
       },
       {
-        path:"/Dashboard",
-        element:<Dashboard/>
+        path: "/Dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path:"/Dashboard/Uploadfile",
+        element:<UploadFile/>
       }
-      
     ],
   },
 ]);
