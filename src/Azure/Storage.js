@@ -77,6 +77,18 @@ class Service {
       console.log("Failed downloading", e);
     }
   }
+  async upload(file){
+    try{
+      const container=this.blobServiceClient.getContainerClient(`semester-5`);
+
+      const filename= container.getBlockBlobClient("Sampleupload");
+      await filename.uploadFile(file)
+
+    }
+    catch(e){
+      console.log("Failed",e.message);
+    }
+  }
 }
 
 const serv = new Service();
@@ -88,5 +100,6 @@ const serv = new Service();
 //     console.log("Failed")
 //   }
 // })
+// serv.upload("c:/Users/Kiran Patil/Downloads/regex_solutions.pdf")
 
 export default serv;
