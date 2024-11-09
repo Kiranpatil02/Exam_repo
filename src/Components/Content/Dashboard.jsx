@@ -1,9 +1,10 @@
 import React from 'react'
+import DashCard from './dashcard'
 export default function Dashboard(){
     return(
         <>
-        <div className='mt-5 max-w-screen-2xl mx-auto flex flex-wrap border-2 justify-center items-center gap-10'>
-           
+        <div className='flex flex-wrap gap-20 gap-y-10  justify-center w-full items-center  mt-5'>
+            <DashCard/>
         </div>
         
         </>
