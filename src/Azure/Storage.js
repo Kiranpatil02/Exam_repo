@@ -1,10 +1,10 @@
 import { BlobServiceClient } from "@azure/storage-blob";
+import config from "../config/config";
 
 class Service {
   constructor() {
-    this.accountName = "examfiles";
-    this.sas =
-      "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-11-19T00:21:44Z&st=2024-11-02T16:21:44Z&spr=https&sig=5jfPbENCKSdGMpSoHjUy8YEYMw7vCGdwLfa%2Bki9gjXY%3D";
+    this.accountName = config.account_name;
+    this.sas =config.sas_token;
     this.blobServiceClient = new BlobServiceClient(
       `https://${this.accountName}.blob.core.windows.net${this.sas}`
     );
@@ -34,7 +34,6 @@ class Service {
       let blobfound = null;
       for await (const i of filename) {
         blobfound = i;
-        // this.downloadfile(i.name);
         return i.name;
       }
       if (!blobfound) {
@@ -54,7 +53,6 @@ class Service {
       const blobClient = this.containerClient.getBlobClient(`${filename}`);
       const downloadblobresponse = await blobClient.download();
       const downloaded = await downloadblobresponse.blobBody;
-      // console.log("Downloaded blob content", downloaded);
 
       const url = URL.createObjectURL(await downloaded);
 
@@ -134,16 +132,6 @@ class Service {
 }
 
 const serv = new Service();
-// serv.getfile("22AIE301 PROBABILISTIC REASONING","2024","quiz3").then((e)=>{
-//   if(e){
-//     console.log("sucess")
-
-//   }else{
-//     console.log("Failed")
-//   }
-// })
-// serv.upload("C:/Users/Kiran Patil/Downloads/5thB_marks.pdf")
-
 // console.log(await serv.getlocationbytag("22AIE301 PROBABILISTIC REASONING",2024))
 
 export default serv;
