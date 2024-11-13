@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { MdOutlineArrowOutward } from "react-icons/md";
-import { useUser } from "@clerk/clerk-react";
+import { useUser,SignOutButton  } from "@clerk/clerk-react";
 import Profile from "./profile";
 
 export default function Navbar() {
@@ -26,10 +26,18 @@ export default function Navbar() {
               Amrita Institutional Repository
             </h2>
           </div>
-          <div className="text-blue-700 hover:text-blue-800 hover:underline">
+          <div className="flex items-center gap-5 text-blue-700 ">
             {
               (isSignedIn)?(
+                <>
+                <div className="text-black hover:text-red-500">
+                <SignOutButton />
+                </div>
+                <div className="hover:underline hover:text-blue-800 ">
                 <Profile/>
+
+                </div>
+                </>
               )
              :(<Link  to={"/sign-in"}>
               Login
