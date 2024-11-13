@@ -1,16 +1,42 @@
 import React, { useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoArrowBackSharp } from "react-icons/io5";
+import serv from "../../Azure/storage";
 
 export default function UploadFile() {
   const [filename, setfilename] = useState("");
+  const [file,setfile]= useState(null);
+  const [success,setsuccess]=useState(false)
 
   const hadnleFilechange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setfilename(file.name);
+    const selectedfile = e.target.files[0];
+    console.log(selectedfile,"THi sis")
+    if (selectedfile) {
+      setfilename(selectedfile.name);
+      setfile(selectedfile);
     }
   };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const droppedFile = e.dataTransfer.files[0];
+    setfilename(droppedFile.name);
+    setfile(droppedFile);
+  };
+
+  const handleSubmit= (e)=>{
+    e.preventDefault();
+
+    const formdata=new FormData();
+    formdata.append("file",file);
+    serv.upload(file);
+    setsuccess(true);
+
+  }
 
   return (
     <>
@@ -18,7 +44,7 @@ export default function UploadFile() {
         <IoArrowBackSharp />
       </div>
       <div className="mt-10 mx-auto border w-1/3 max-w-xl rounded-lg">
-        <form className="py-6 px-9 " method="POST">
+        <form className="py-6 px-9" onSubmit={handleSubmit}>
           <div class="mb-5  flex justify-center gap-10 px-2">
             <div>
               <label
@@ -104,11 +130,13 @@ export default function UploadFile() {
                   onChange={hadnleFilechange}
                   type="file"
                   name="file"
-                  id="file"
                   accept=".pdf"
                   className="sr-only"
                 />
                 <label
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+
                   for="file"
                   className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
                 >
@@ -128,10 +156,15 @@ export default function UploadFile() {
               </div>
           </div>
 
-          <div>
-            <button className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
+          <div>{
+              (success)? 
+              <h2>File uploaded 🚀🚀</h2> :
+              <button type="submit" className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
               Send File
             </button>
+
+            }
+            
           </div>
         </form>
       </div>
