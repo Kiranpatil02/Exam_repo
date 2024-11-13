@@ -1,49 +1,114 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoArrowBackSharp } from "react-icons/io5";
 import serv from "../../Azure/storage";
+import db from "../../Azure/data";
+import { Link } from "react-router-dom";
 
 export default function UploadFile() {
   const [filename, setfilename] = useState("");
   const [file,setfile]= useState(null);
   const [success,setsuccess]=useState(false)
+  const [courses, setcourses] = useState([]);
+  const [semeseter,setsemester]=useState(1);
+  const [coursename,setcoursename]=useState("")
+  const [year, setyear] = useState("2024");
+  const [examtype, setexamtype] = useState("quiz-1");
+  useEffect(()=>{
+    db.fetchDocuments(semeseter).then((e)=>{
+      setcourses(e)
+    })
+
+  },[semeseter])
+
+  useEffect(() => {
+    if (courses.length > 0) {
+      setcoursename(courses[0]); 
+    }
+  }, [courses]);
 
   const hadnleFilechange = (e) => {
     const selectedfile = e.target.files[0];
-    console.log(selectedfile,"THi sis")
     if (selectedfile) {
       setfilename(selectedfile.name);
       setfile(selectedfile);
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const droppedFile = e.dataTransfer.files[0];
-    setfilename(droppedFile.name);
-    setfile(droppedFile);
-  };
-
   const handleSubmit= (e)=>{
     e.preventDefault();
 
+    if (!file) {
+
+      return; 
+    }
+
     const formdata=new FormData();
     formdata.append("file",file);
-    serv.upload(file);
-    setsuccess(true);
+    serv.upload(file,coursename,year,examtype).then(()=>{
+      setsuccess(true);
+      
+    }).catch(()=>console.log("Failed"))
 
   }
 
+  function generatesemesters(){
+    return Array.from({length:7},(_,i)=>(
+      <option key={i}>{i+1}</option>
+    ))
+  }
+
+   const handlesemester=(e)=>{
+    setsemester(e.target.value)
+  }
+
+  const handlecourse=(e)=>{
+    setcoursename(e.target.value);
+  }
+  const handleexamtype = (e) => {
+    setexamtype(e.target.value);
+  };
+  const handleyear = (e) => {
+    setyear(e.target.value); 
+  };
+  const handleReset = () => {
+    setfilename("");
+    setfile(null);
+    setsuccess(false);
+  };
+  
   return (
     <>
-      <div className="text-3xl absolute mt-5 w-fit ml-10 hover:cursor-pointer">
+      <div  className="text-3xl absolute mt-5 w-fit ml-10 hover:cursor-pointer">
+        <Link to={"/"}>
         <IoArrowBackSharp />
+        </Link>
       </div>
-      <div className="mt-10 mx-auto border w-1/3 max-w-xl rounded-lg">
+      {
+        success?(
+          <>
+          <div className="mx-auto  w-96 mt-20">
+
+          <div className="py-6 px-9">
+          <h2 className="text-center text-xl font-semibold text-green-600">
+            File uploaded successfully! 🚀🚀
+          </h2>
+        </div>
+        <div className="mx-auto w-fit">
+
+        <button
+        onClick={handleReset}
+        className="hover:shadow-form  rounded-md bg-[#6A64F1] hover:bg-purple-500 py-2 px-6 text-center text-base font-semibold text-white outline-none"
+        >
+        Upload Again
+      </button>
+          </div>
+        </div>
+      </>
+
+        ):
+        (
+          <div className="mt-10 mx-auto border w-1/3 max-w-xl rounded-lg">
         <form className="py-6 px-9" onSubmit={handleSubmit}>
           <div class="mb-5  flex justify-center gap-10 px-2">
             <div>
@@ -53,10 +118,8 @@ export default function UploadFile() {
               >
                 Select Semester
               </label>
-              <select className="ml-2 w-28 rounded-md border h-12 rounded-md  outline-none">
-                <option>Semester-1</option>
-                <option>Semester-2</option>
-                <option>Semester-3</option>
+              <select onChange={handlesemester} className="ml-2 w-12 rounded-md border h-8 rounded-md  outline-none">
+               {generatesemesters()}
               </select>
             </div>
             <div>
@@ -66,10 +129,12 @@ export default function UploadFile() {
               >
                 Select Course
               </label>
-              <select className="ml-2 w-28 rounded-md border h-12 rounded-md  outline-none">
-                <option>Semester-1</option>
-                <option>Semester-2</option>
-                <option>Semester-3</option>
+              <select onChange={handlecourse}  className="ml-2 w-44 rounded-md border h-12 rounded-md  outline-none">
+                {
+                  courses.map((e,index)=>(
+                    <option key={index}>{e}</option>
+                  ))
+                }
               </select>
             </div>
           </div>
@@ -82,7 +147,11 @@ export default function UploadFile() {
                 </h2>
                 <div
                   className="border w-fit bg-red-600 px-2 rounded mt-2 text-white hover:cursor-pointer"
-                  onClick={() => setfilename("")}
+                  onClick={() =>{
+                    setfilename("");
+                    setfile(null);
+
+                  }}
                 >
                   <h2>Drop</h2>
                 </div>
@@ -94,7 +163,7 @@ export default function UploadFile() {
                     >
                       Exam name
                     </label>
-                    <select className="ml-2 w-28 rounded-md border h-8 rounded-md  outline-none">
+                    <select onChange={handleexamtype}  className="ml-2 w-28 rounded-md border h-8 rounded-md  outline-none">
                       <option>quiz-1</option>
                       <option>quiz-2</option>
                       <option>quiz-3</option>
@@ -108,7 +177,7 @@ export default function UploadFile() {
                     >
                       Year
                     </label>
-                    <select className="ml-2 w-28 rounded-md border h-8 rounded-md  outline-none">
+                    <select onChange={handleyear} className="ml-2 w-28 rounded-md border h-8 rounded-md  outline-none">
                       <option>2024</option>
                       <option>2023</option>
                       <option>2022</option>
@@ -131,13 +200,12 @@ export default function UploadFile() {
                   type="file"
                   name="file"
                   accept=".pdf"
+                  id="file-input"
                   className="sr-only"
                 />
                 <label
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-
                   for="file"
+                   htmlFor="file-input"
                   className="relative flex min-h-[200px] items-center justify-center rounded-md border border-dashed border-[#e0e0e0] p-12 text-center"
                 >
                   <div>
@@ -154,20 +222,14 @@ export default function UploadFile() {
                   </div>
                 </label>
               </div>
-          </div>
-
-          <div>{
-              (success)? 
-              <h2>File uploaded 🚀🚀</h2> :
-              <button type="submit" className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
+              <button disabled={!file} type="submit" className="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
               Send File
             </button>
-
-            }
-            
           </div>
-        </form>
+        </form>     
       </div>
+        )
+      }
     </>
   );
 }
