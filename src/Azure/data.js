@@ -1,7 +1,8 @@
 import { CosmosClient } from "@azure/cosmos";
+import config from "../config/config";
 
  export class docs{
-    client=new CosmosClient(import.meta.env.VITE_AZURE_COSMOS_CONNECTIONSTRING);
+    client=new CosmosClient(config.cosmos_connection);
 
     constructor(){
         this.database=this.client.database("container2");
