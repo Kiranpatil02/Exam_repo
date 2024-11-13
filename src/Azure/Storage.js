@@ -19,18 +19,12 @@ class Service {
         console.log(`Blob ${i++}: ${blob.name}`);
       }
 
-      // for await (const blob of this.containerClient.listBlobsFlat()) {
-      //   console.log(`Blob: ${blob.name}`);
-      // }
     } catch (error) {
       console.error("Error listing files:", error);
     }
   }
 
   async getfile(tag, value, examname) {
-    console.log("tag=", tag);
-    console.log("value=", value);
-    console.log("examname=", examname);
     tag = tag.replace(/\s+/g,' ').trim().split(" ").slice(1).join("_").toUpperCase();
     console.log(tag);
     try {
@@ -77,16 +71,64 @@ class Service {
       console.log("Failed downloading", e);
     }
   }
-  async upload(file){
-    try{
-      const container=this.blobServiceClient.getContainerClient(`semester-5`);
 
-      const filename= container.getBlockBlobClient("Sampleupload");
-      await filename.uploadFile(file)
+  async getlocationbytag(course,year){
+    course = course.replace(/\s+/g,' ').trim().split(" ").slice(1).join("_").toUpperCase();
+    console.log(course,"Formatted one");
+
+    const query = `${course}='${year}'`;
+  console.log("Tag query:", query);
+
+    try{
+      const filename =  this.blobServiceClient.findBlobsByTags(
+        query
+      );
+    const blobs = [];
+    const result=[]
+  
+    for  await(const blob of filename) {
+      const blobLocation = {
+        containerName: blob.containerName,
+        blobPath: blob.name, 
+      };
+      blobs.push(blobLocation);
+      if (blobs.length === 0) {
+        console.log("No blobs found matching the specified tags:", course, year);
+        throw new Error("No blobs found matching the specified tags.");
+      }
+    }
+    const path = `${blobs[0].containerName}/${blobs[0].blobPath}`;
+    const trimmedPath = path.substring(0, path.lastIndexOf('/'));
+    result.push(course,trimmedPath)
+    return result
 
     }
     catch(e){
-      console.log("Failed",e.message);
+      console.log("Failed getting path",e)
+    }
+  }
+
+  async upload(file,coursename,year,examtype){
+    try{
+      const [filteredname,path]=await this.getlocationbytag(coursename,year);
+      console.log("The tag1 is",filteredname)
+      console.log("The tag3 is",path)
+      const container=this.blobServiceClient.getContainerClient(path);
+      console.log("Inisde")
+
+      const filename= container.getBlockBlobClient(file.name);
+      await filename.uploadData(file);
+      console.log("Uploadeded")
+
+      await filename.setTags({
+        [filteredname]:`${year}`,
+        exam:`${examtype}`
+      });
+      console.log("Tags uploaded sucess")
+
+    }
+    catch(e){
+      console.log("Failed",e);
     }
   }
 }
@@ -100,6 +142,8 @@ const serv = new Service();
 //     console.log("Failed")
 //   }
 // })
-// serv.upload("c:/Users/Kiran Patil/Downloads/regex_solutions.pdf")
+// serv.upload("C:/Users/Kiran Patil/Downloads/5thB_marks.pdf")
+
+// console.log(await serv.getlocationbytag("22AIE301 PROBABILISTIC REASONING",2024))
 
 export default serv;
