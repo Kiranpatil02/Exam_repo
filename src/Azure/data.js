@@ -13,7 +13,6 @@ import config from "../config/config";
     async  fetchDocuments(id) {
         try {
             const {resource:document } = await this.container.item(`Semester-${id}`).read();
-            console.log(document.coursename);
             return document.coursename;
         } catch (error) {
             console.error("Error retrieving documents:", error);
