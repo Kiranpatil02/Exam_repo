@@ -18,9 +18,7 @@ export default function Content() {
   useEffect(() => {
     db.fetchDocuments(id).then((e) => {
       setcourses(e);
-
       e.forEach((course) => {
-        console.log("Name is ", course);
         checkfileavailable(course, year, "quiz1");
         checkfileavailable(course, year, "quiz2");
         checkfileavailable(course, year, "quiz3");
