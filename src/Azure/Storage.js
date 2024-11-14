@@ -3,7 +3,7 @@ import config from "../config/config";
 
 class Service {
   constructor() {
-    this.accountName = config.account_name;
+    this.accountName =config.account_name;
     this.sas =config.sas_token;
     this.blobServiceClient = new BlobServiceClient(
       `https://${this.accountName}.blob.core.windows.net${this.sas}`
@@ -75,6 +75,7 @@ class Service {
     console.log(course,"Formatted one");
 
     const query = `${course}='${year}'`;
+
   console.log("Tag query:", query);
 
     try{
@@ -89,10 +90,11 @@ class Service {
         containerName: blob.containerName,
         blobPath: blob.name, 
       };
+
       blobs.push(blobLocation);
       if (blobs.length === 0) {
-        console.log("No blobs found matching the specified tags:", course, year);
-        throw new Error("No blobs found matching the specified tags.");
+        console.log("No blobs found for specified tags.");
+      return [course, null]; 
       }
     }
     const path = `${blobs[0].containerName}/${blobs[0].blobPath}`;
@@ -103,12 +105,39 @@ class Service {
     }
     catch(e){
       console.log("Failed getting path",e)
+      return [course, null];
     }
   }
 
-  async upload(file,coursename,year,examtype){
+  async uploadFileTocontainer(containerName,filename,file,tags){
     try{
+      const containerClient=this.blobServiceClient.getContainerClient(containerName);
+      await containerClient.createIfNotExists();
+      const blockBlobclient=containerClient.getBlockBlobClient(filename);
+
+      await blockBlobclient.uploadData(file);
+      await blockBlobclient.setTags(tags);
+
+    }catch(error){
+      console.log("Error file uploading",error);
+      throw error;
+    }
+  }
+
+  async upload(file,coursename,year,examtype,id){
+    try{
+      examtype=examtype.replace(/-(\d+)$/, '$1');
       const [filteredname,path]=await this.getlocationbytag(coursename,year);
+      console.log(path,"Path new")
+
+      if(!path){
+        const tags={
+          [filteredname]:`${year}`,
+          exam:`${examtype}`
+        }
+        await this.uploadFileTocontainer(`semester-${id}`, file.name, file, tags);
+        return;
+      }
       console.log("The tag1 is",filteredname)
       console.log("The tag3 is",path)
       const container=this.blobServiceClient.getContainerClient(path);
@@ -129,6 +158,7 @@ class Service {
       console.log("Failed",e);
     }
   }
+
 }
 
 const serv = new Service();
