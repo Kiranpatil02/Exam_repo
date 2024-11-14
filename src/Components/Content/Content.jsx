@@ -53,22 +53,22 @@ export default function Content() {
 
   return (
     <>
-      <div>
-        <div className="mt-5 flex gap-10  justify-center items-center">
+      <div> 
+        <div className="mt-5 flex lg:gap-10   border-2  justify-center items-center">
           <div>
-            <label className="text-xl" htmlFor="">
+            <label className="text-lg lg:text-xl">
               Department
             </label>
-            <select className=" ml-2 w-32 rounded-md border h-12 rounded-md hover:outline-none">
+            <select className=" lg:ml-2 w-28 lg:w-32 rounded-md border h-12 rounded-md hover:outline-none">
               <option value="US">Computer Science and AIE</option>
             </select>
           </div>
           <div>
-            <label htmlFor="" className="text-xl">
+            <label  className="text-lg lg:text-xl">
               Course
             </label>
 
-            <select className=" ml-2 w-32 rounded-md border h-12 rounded-md w-40 hover:outline-none">
+            <select className="lg:ml-2 w-28 lg:w-32 rounded-md border h-12 rounded-md w-40 hover:outline-none">
               {courses.map((coursename) => (
                 <>
                   <option>{coursename}</option>
@@ -77,11 +77,11 @@ export default function Content() {
             </select>
           </div>
           <div>
-            <label htmlFor="" className="text-xl">
+            <label  className="text-lg lg:text-xl">
               Year
             </label>
             <select
-              className="ml-2 w-32 rounded-md border h-12 rounded-md w-40 hover:outline-none"
+              className="lg:ml-2  w-fit lg:w-32 rounded-md border h-12 rounded-md w-40 hover:outline-none"
               onChange={handleyear}
             >
               <option>2024</option>

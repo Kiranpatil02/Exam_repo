@@ -9,10 +9,10 @@ export default function Navbar() {
   return (
     <>
       <div className="bg-gray-200 h-16 max-w-screen-2xl mx-auto ">
-        <div className="flex items-center border-2  justify-between h-full px-6 ">
+        <div className="flex items-center border-2  justify-between h-full px-2 ">
           <div>
             <a
-              className="text-blue-500 text-sm sm:text-xl hover:text-blue-800  underline inline-flex flex items-center "
+              className="text-blue-500 text-xs sm:text-xl hover:text-blue-800  underline inline-flex flex items-center "
               href="https://intranet.cb.amrita.edu/" 
             >
               Intranet
@@ -22,18 +22,18 @@ export default function Navbar() {
             </a>
           </div>
           <div>
-            <h2 className="font-serif  text-lg md:text-3xl  text-center ">
+            <h2 className="font-serif  text-sm md:text-3xl border-2 text-center ">
               Amrita Institutional Repository
             </h2>
           </div>
-          <div className="flex items-center gap-5 text-blue-700 ">
+          <div className="flex items-center  md:gap-5 text-blue-700 ">
             {
               (isSignedIn)?(
                 <>
-                <div className="text-black hover:text-red-500">
+                <div className="text-black  text-sm w-20  text-center  hover:text-red-500">
                 <SignOutButton />
                 </div>
-                <div className="hover:underline hover:text-blue-800 ">
+                <div className="hover:underline hover:text-blue-800  ">
                 <Profile/>
 
                 </div>

@@ -10,11 +10,13 @@ import config from "./config/config.js";
 import Login from "./Components/Login/Login.jsx";
 import Dashboard from "./Components/Content/Dashboard.jsx";
 import UploadFile from "./Components/User/Upload.jsx";
+import ErrorPage from "./Error.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement:<ErrorPage/>,
     children: [
       {
         path: "/",

@@ -8,7 +8,7 @@ export default function Profile() {
     <>
     <Link to={'/Dashboard'}>
       <div class="flex items-center gap-1 hover:cursor-pointer ">
-        <p className="text-gray-700">{user.firstName}</p>
+        <p className="text-gray-700">{user.username}</p>
         <div className="flex items-center justify-center w-9 h-9  rounded-full bg-blue-500 text-white font-bold"></div>
       </div>
     </Link>

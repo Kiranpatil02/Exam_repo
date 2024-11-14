@@ -45,7 +45,7 @@ export default function UploadFile() {
 
     const formdata=new FormData();
     formdata.append("file",file);
-    serv.upload(file,coursename,year,examtype).then(()=>{
+    serv.upload(file,coursename,year,examtype,semeseter).then(()=>{
       setsuccess(true);
       
     }).catch(()=>console.log("Failed"))
@@ -79,7 +79,7 @@ export default function UploadFile() {
   
   return (
     <>
-      <div  className="text-3xl absolute mt-5 w-fit ml-10 hover:cursor-pointer">
+      <div  className="text-3xl absolute mt-5 w-fit ml-2 md:ml-9 hover:cursor-pointer">
         <Link to={"/"}>
         <IoArrowBackSharp />
         </Link>
@@ -108,15 +108,14 @@ export default function UploadFile() {
 
         ):
         (
-          <div className="mt-10 mx-auto border w-1/3 max-w-xl rounded-lg">
-        <form className="py-6 px-9" onSubmit={handleSubmit}>
-          <div class="mb-5  flex justify-center gap-10 px-2">
+          <div className="mt-20 mx-auto border w-80 md:w-1/2 max-w-xl rounded-lg">
+        <form className="px-4 py-5  md:py-6  md:px-9 py-9 " onSubmit={handleSubmit}>
+          <div class="mb-5  flex  justify-center gap-5   md:gap-10 px-2">
             <div>
               <label
-                for="email"
-                className="mb-3 block text-base font-medium text-[#07074D]"
+                className=" md:mb-2 block text-sm md:text-base font-medium text-[#07074D]"
               >
-                Select Semester
+                Select Semester 
               </label>
               <select onChange={handlesemester} className="ml-2 w-12 rounded-md border h-8 rounded-md  outline-none">
                {generatesemesters()}
@@ -124,12 +123,11 @@ export default function UploadFile() {
             </div>
             <div>
               <label
-                for="email"
-                className="mb-3 block text-base font-medium text-[#07074D]"
+                className="md:mb-2 block text-sm md:text-base font-medium text-[#07074D]"
               >
                 Select Course
               </label>
-              <select onChange={handlecourse}  className="ml-2 w-44 rounded-md border h-12 rounded-md  outline-none">
+              <select onChange={handlecourse}  className="md:ml-2 w-32 h-9 text-sm md:w-44 rounded-md border md:h-10 rounded-md  outline-none">
                 {
                   courses.map((e,index)=>(
                     <option key={index}>{e}</option>
@@ -155,11 +153,11 @@ export default function UploadFile() {
                 >
                   <h2>Drop</h2>
                 </div>
-                <div className="flex justify-center gap-10 mt-5">
-                  <div className="flex">
+                <div className="flex justify-center md:gap-10 mt-5">
+                  <div className="flex flex-wrap">
                     <label
                       for="email"
-                      className="mb-3 block text-lg font-medium  text-[#07074D]"
+                      className="md:mb-3 block text-md md:text-lg font-medium  text-[#07074D]"
                     >
                       Exam name
                     </label>
@@ -170,14 +168,14 @@ export default function UploadFile() {
                       <option>midterm</option>
                     </select>
                   </div>
-                  <div className="flex">
+                  <div className="flex flex-wrap">
                     <label
                       for="email"
-                      className="mb-3 block text-lg font-medium  text-[#07074D]"
+                      className="md:mb-3 block text-md md:text-lg font-medium  text-[#07074D]"
                     >
                       Year
                     </label>
-                    <select onChange={handleyear} className="ml-2 w-28 rounded-md border h-8 rounded-md  outline-none">
+                    <select onChange={handleyear} className=" w-20 ml-2 md:w-28 rounded-md border h-8 rounded-md  outline-none">
                       <option>2024</option>
                       <option>2023</option>
                       <option>2022</option>

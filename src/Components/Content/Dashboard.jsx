@@ -10,7 +10,7 @@ export default function Dashboard() {
           <IoArrowBackSharp />
         </Link>
       </div>
-      <div className="flex flex-wrap gap-20 gap-y-10  justify-center w-full items-center  mt-5">
+      <div className="flex flex-wrap gap-20 gap-y-10   justify-center w-full items-center  mt-20">
         <DashCard />
       </div>
     </>
