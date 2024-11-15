@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import db from "../../Azure/data";
-import serv from "../../Azure/Storage";
+import db from "../../Azure/data.js";
+import serv from "../../Azure/Storage.js";
 import { BsFilePdf } from "react-icons/bs";
 
 export default function Content() {
