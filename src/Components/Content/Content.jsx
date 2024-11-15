@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import db from "C:/Users/Kiran Patil/Desktop/Cloud computing/End-sem/Exam_repo/src/Azure/data.js";
+import db from "../../Azure/data";
 import serv from "../../Azure/storage";
 import { BsFilePdf } from "react-icons/bs";
 
