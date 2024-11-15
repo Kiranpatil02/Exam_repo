@@ -54,7 +54,7 @@ export default function Content() {
   return (
     <>
       <div> 
-        <div className="mt-5 flex lg:gap-10   border-2  justify-center items-center">
+        <div className="mt-5 flex flex-wrap gap-2 lg:gap-10   justify-center items-center">
           <div>
             <label className="text-lg lg:text-xl">
               Department
