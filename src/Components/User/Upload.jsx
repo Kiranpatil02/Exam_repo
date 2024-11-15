@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaFileUpload } from "react-icons/fa";
 import { IoArrowBackSharp } from "react-icons/io5";
-import serv from "../../Azure/storage";
+import serv from "../../Azure/Storage";
 import db from "../../Azure/data";
 import { Link } from "react-router-dom";
 
