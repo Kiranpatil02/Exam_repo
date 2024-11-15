@@ -11,6 +11,7 @@ import Login from "./Components/Login/Login.jsx";
 import Dashboard from "./Components/Content/Dashboard.jsx";
 import UploadFile from "./Components/User/Upload.jsx";
 import ErrorPage from "./Error.jsx";
+import { Analytics } from "@vercel/analytics/react"
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
+    <Analytics/>
     <ClerkProvider publishableKey={config.clerk_key}>
       <RouterProvider router={router} />
     </ClerkProvider>
