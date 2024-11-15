@@ -12,6 +12,7 @@ import Dashboard from "./Components/Content/Dashboard.jsx";
 import UploadFile from "./Components/User/Upload.jsx";
 import ErrorPage from "./Error.jsx";
 import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Analytics/>
+    <SpeedInsights />
     <ClerkProvider publishableKey={config.clerk_key}>
       <RouterProvider router={router} />
     </ClerkProvider>
