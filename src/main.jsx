@@ -12,7 +12,7 @@ import Dashboard from "./Components/Content/Dashboard.jsx";
 import UploadFile from "./Components/User/Upload.jsx";
 import ErrorPage from "./Error.jsx";
 import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/react
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 const router = createBrowserRouter([
   {
